@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 )
 
@@ -24,4 +26,15 @@ func main() {
 
 func notes(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hi")
+}
+
+func renderTemplate(w http.ResponseWriter, tmpl string) {
+	parsedTemplate, err := template.ParseFiles("./templates/" + tmpl)
+	if err != nil {
+		log.Panic(err)
+	}
+	err = parsedTemplate.Execute(w, nil)
+	if err != nil {
+		log.Panic(err)
+	}
 }
