@@ -1,5 +1,6 @@
 package main
 
+// will eventually have to go :)
 var mock_notes = Page{
 	[]Note{
 		{
