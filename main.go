@@ -2,39 +2,68 @@ package main
 
 import (
 	"fmt"
-	"html/template"
-	"log"
 	"net/http"
+	"text/template"
+
+	"github.com/go-chi/chi"
 )
 
-type note struct {
-	title string
-	body  string
-	tags  []tag
+type Note struct {
+	Title string
+	Body  string
+	Tags  []Tag
 }
 
-type tag struct {
-	title string
-	notes []note
+type Tag struct {
+	Title string
+	Notes []Note
 }
+
+type Page struct {
+	Notes []Note
+}
+
+type Login struct {
+	Email    string
+	Password string
+}
+
+const IP = "127.0.0.1"
+const port = ":7890"
 
 func main() {
-	fmt.Println("Work in progress :)")
-	http.HandleFunc("/", index)
-	http.ListenAndServe(":7890", nil)
+	r := chi.NewRouter()
+	fmt.Println(r)
+
+	fmt.Printf("Serving Fastnotes on http://%s%s\n", IP, port)
+
+	r.Get("/", index)
+	r.Route("/login", func(r chi.Router) {
+		r.Get("/", loginGet)
+		r.Post("/", loginPost)
+	})
+
+	http.ListenAndServe(IP+port, r)
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "index.html")
+	p := &mock_notes
+	t, _ := template.ParseFiles("templates/base.html", "templates/index.html")
+	t.ExecuteTemplate(w, "index.html", p)
 }
 
-func renderTemplate(w http.ResponseWriter, tmpl string) {
-	parsedTemplate, err := template.ParseFiles("./templates/"+tmpl, "./templates/base.html")
-	if err != nil {
-		log.Panic(err)
+func loginGet(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("templates/base.html", "templates/login.html")
+	t.ExecuteTemplate(w, "login.html", nil)
+}
+
+func loginPost(w http.ResponseWriter, r *http.Request) {
+	details := Login{
+		Email:    r.FormValue("email"),
+		Password: r.FormValue("password"),
 	}
-	err = parsedTemplate.Execute(w, nil)
-	if err != nil {
-		log.Panic(err)
-	}
+
+	fmt.Println(details)
+
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }

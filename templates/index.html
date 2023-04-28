@@ -1,4 +1,11 @@
 {{ template "base" .}}
-{{ define "content" }}
-    <h1>Hello world</h1>
-{{ end }}
+{{define "content"}}
+<div class="container">
+    <h1>Notes</h1>
+    <hr>
+    {{ range .Notes }}
+    <p><strong>{{.Title}}</strong></p>
+    <p>{{.Body}}</p>
+    {{end}}
+</div>
+{{end}}
