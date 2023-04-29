@@ -8,15 +8,15 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
-const IP = "127.0.0.1"
-const port = ":7890"
-
 func main() {
+	// session := getSession()
+	cfg := getConfig("./config.toml")
+	fmt.Printf("Settings: %v\n", cfg)
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	fmt.Println(r)
+	r.Use(csrfProtect)
 
-	fmt.Printf("Serving Fastnotes on http://%s%s\n", IP, port)
+	fmt.Printf("Serving Fastnotes on http://%s%s\n", cfg.Server.IP, cfg.Server.Port)
 
 	r.Get("/", index)
 	r.Route("/login", func(r chi.Router) {
@@ -24,5 +24,5 @@ func main() {
 		r.Post("/", loginPost)
 	})
 
-	http.ListenAndServe(IP+port, r)
+	http.ListenAndServe(cfg.Server.IP+cfg.Server.Port, r)
 }
