@@ -8,11 +8,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
-var cfg Config
-
-func init() {
-	cfg = getConfig("./config.toml")
-}
+var cfg Config = getConfig("./config.toml")
 
 func main() {
 	// session := getSession()
