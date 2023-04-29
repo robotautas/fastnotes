@@ -20,7 +20,7 @@ func csrfProtect(next http.Handler) http.Handler {
 	csrfHandler.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
 		Path:     "/",
-		Secure:   false,
+		Secure:   cfg.Server.InProduction,
 		SameSite: http.SameSiteLaxMode,
 	})
 	return csrfHandler

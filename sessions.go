@@ -13,6 +13,6 @@ func getSession() *scs.SessionManager {
 	session.Cookie.Persist = true
 	session.Cookie.SameSite = http.SameSiteLaxMode
 	//change in production!
-	session.Cookie.Secure = false
+	session.Cookie.Secure = cfg.Server.InProduction
 	return session
 }

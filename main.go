@@ -8,9 +8,14 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
+var cfg Config
+
+func init() {
+	cfg = getConfig("./config.toml")
+}
+
 func main() {
 	// session := getSession()
-	cfg := getConfig("./config.toml")
 	fmt.Printf("Settings: %v\n", cfg)
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
