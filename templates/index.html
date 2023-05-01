@@ -1,12 +1,21 @@
 {{ template "base" .}}
 {{define "content"}}
 {{/* .token */}}
-<div class="container">
-    <h1>Notes</h1>
-    <hr>
-    {{ range .Notes }}
-    <p><strong>{{.Title}}</strong></p>
-    <p>{{.Body}}</p>
-    {{end}}
+<div class="container mt-5">
+    <div class="row g-3">
+        {{ range .Notes }}
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{.Title}}</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">2022/02/02 9:50PM</h6>
+                    <p class="card-text">{{.Body}}</p>
+                    <a href="#" class="card-link">Edit</a>
+                    <a href="#" class="card-link">Delete</a>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
 </div>
 {{end}}
