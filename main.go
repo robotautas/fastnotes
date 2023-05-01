@@ -25,5 +25,8 @@ func main() {
 		r.Post("/", loginPost)
 	})
 
+	fileServer := http.FileServer(http.Dir("./static/"))
+	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
 	http.ListenAndServe(cfg.Server.IP+cfg.Server.Port, r)
 }
